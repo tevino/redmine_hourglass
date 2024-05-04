@@ -15,17 +15,16 @@ showNotice = (message) ->
 showErrorMessage = (message) ->
   showMessage message, 'error'
 
-showDialog = (className, $content, buttons = []) ->
-  $('<div/>', class: className, title: $content.data('dialog-title'))
-  .append $content.removeClass('hidden')
-  .appendTo 'body'
-  .dialog
-    autoOpen: true
-    resizable: false
-    draggable: false
-    modal: true
-    width: 300
-    buttons: buttons
+showDialog = (content, buttons = []) ->
+  $(content)
+    .appendTo 'body'
+    .dialog
+      autoOpen: true
+      resizable: false
+      draggable: false
+      modal: true
+      width: 300
+      buttons: buttons
 
 formatDuration = (duration, unit = null) ->
   duration = moment.duration duration, unit unless moment.isDuration duration

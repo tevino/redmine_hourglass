@@ -78,7 +78,7 @@ showStartDialog = (e) ->
     if $startDialogContent.length isnt 0
       e.preventDefault()
       e.stopPropagation()
-      hourglass.Utils.showDialog 'js-start-dialog', $startDialogContent, [
+      hourglass.Utils.showDialog $startDialogContent.data('content'), [
         {
           text: $startDialogContent.data('button-ok-text')
           click: -> startDialogApplyHandler.call(@, e.target)
@@ -101,7 +101,7 @@ showStopDialog = (e) ->
     if $stopDialogContent.length isnt 0
       e.preventDefault()
       e.stopPropagation()
-      hourglass.Utils.showDialog 'js-stop-dialog', $stopDialogContent, [
+      hourglass.Utils.showDialog $stopDialogContent.data('content'), [
         {
           text: $stopDialogContent.data('button-ok-text')
           click: -> stopDialogApplyHandler.call(@, e.target)
