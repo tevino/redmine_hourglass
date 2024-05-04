@@ -17,6 +17,8 @@ end.to_prepare do
   else
     Redmine::PluginLoader.directories.find{|d| d.to_s == File.join(Redmine::PluginLoader.directory, Hourglass::PLUGIN_NAME.to_s)}.extend Hourglass::RedminePatches::MirrorAssetsPatch
   end
+
+  Hourglass::RedmineHooks.load! if Rails.version >= "6" and not Rails.configuration.eager_load
 end
 
-Hourglass::RedmineHooks.load!
+Hourglass::RedmineHooks.load! if Rails.version <= "5" or Rails.configuration.eager_load

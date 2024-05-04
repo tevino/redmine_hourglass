@@ -17,8 +17,7 @@ module Hourglass
       end
 
       def default_activity(scope = TimeEntryActivity.shared.active)
-        system_wide_default = TimeEntryActivity.default
-        scope.find_by(name: [pref.default_activity, system_wide_default && system_wide_default.name])
+        scope.find_by(name: [pref.default_activity, TimeEntryActivity.default&.name])
       end
     end
   end
