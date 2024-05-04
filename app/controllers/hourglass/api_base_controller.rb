@@ -58,7 +58,7 @@ module Hourglass
 
     def do_update(record, params_hash)
       record = authorize_update record, params_hash
-      if record.errors.empty?
+      if record.valid?
         respond_with_success
       else
         respond_with_error :bad_request, record.errors.full_messages, array_mode: :sentence
