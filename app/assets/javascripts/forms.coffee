@@ -3,6 +3,7 @@ initIssueAutoCompletion = ->
   $projectField = $issueField.closest('form').find("[name*='[project_id]']")
   $issueField.autocomplete
     source: (request, response) ->
+      return response([]) if request.term == '#'
       $.ajax
         url: hourglassRoutes.hourglass_completion_issues(project_id: $projectField.val()),
         dataType: 'json',

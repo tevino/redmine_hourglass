@@ -14,14 +14,19 @@ module Hourglass
       process_current_action
       time_tracker = authorize Hourglass::TimeTracker.new time_tracker_params? ? time_tracker_params.except(:start) : {}
       if time_tracker.save
-        respond_with_success time_tracker
+        respond_with_success time_tracker.as_json(form_details: true)
       else
         respond_with_error :bad_request, time_tracker.errors.full_messages, array_mode: :sentence
       end
     end
 
     def update
-      do_update get_time_tracker, time_tracker_params
+      time_tracker = authorize_update get_time_tracker, time_tracker_params
+      if time_tracker.valid?
+        respond_with_success time_tracker.as_json(form_details: true)
+      else
+        respond_with_error :bad_request, time_tracker.errors.full_messages, array_mode: :sentence
+      end
     end
 
     def bulk_update

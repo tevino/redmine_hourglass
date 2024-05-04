@@ -155,11 +155,11 @@ describe 'Time trackers API', type: :request do
       end
       let(:time_tracker) { {time_tracker: {comments: 'test2'}} }
 
-      include_examples 'access rights', :hourglass_track_time, :hourglass_edit_tracked_time, :hourglass_edit_own_tracked_time, success_code: '204'
+      include_examples 'access rights', :hourglass_track_time, :hourglass_edit_tracked_time, :hourglass_edit_own_tracked_time, success_code: '200'
 
       include_examples 'not found'
 
-      response '204', 'time tracker found' do
+      response '200', 'time tracker updated' do
         run_test!
 
         it 'changes the time tracker' do

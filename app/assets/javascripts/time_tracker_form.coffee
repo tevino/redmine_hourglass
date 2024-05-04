@@ -14,27 +14,21 @@ updateLink = ($field) ->
     $link.toggleClass 'hidden', $field.val() is ''
     $link.attr('href', $link.attr('href').replace(/\/([^/]*)$/, "/#{$field.val()}"))
 
-refreshForm = () ->
-  $.ajax
-    url: hourglassRoutes.hourglass_time_tracker('current')
-    type: 'get'
-    success: (data) ->
-      oldData = formData
-      formData = data
-      if oldData.issue_id != data.issue_id
-        $issueField = $('#time_tracker_issue_id')
-        $issueField.val(data.issue_id)
-        updateLink($issueField)
-      if oldData.project_id != data.project_id
-        $projectField = $('#time_tracker_project_id')
-        $projectField.val(data.project_id)
-        updateLink($projectField)
-      if oldData.activity_id != data.activity_id
-        $activityField = $('#time_tracker_activity_id')
-        $activityField.val(data.activity_id)
-      return
-    error: ({responseJSON}) ->
-      hourglass.Utils.showErrorMessage responseJSON.message
+updateFormData = (data) ->
+  oldData = formData
+  formData = data
+  if oldData.issue_id != data.issue_id
+    $('#issue_text').val(data.issue_label);
+    updateLink($('#time_tracker_issue_id').val(data.issue_id))
+  if oldData.project_id != data.project_id
+    $projectField = $('#time_tracker_project_id')
+    $projectField.val(data.project_id)
+    updateLink($projectField)
+    hourglass.FormValidator.validateField $projectField
+  if oldData.activity_id != data.activity_id
+    $activityField = $('#time_tracker_activity_id')
+    $activityField.val(data.activity_id)
+    hourglass.FormValidator.validateField $activityField
 
 putForm = () ->
   putTimer = 0
@@ -45,8 +39,8 @@ putForm = () ->
     url: hourglassRoutes.hourglass_time_tracker('current')
     type: 'put'
     data: data
-    success: () ->
-      refreshForm()
+    success: (formData) ->
+      updateFormData(formData)
     error: ({responseJSON}) ->
       hourglass.Utils.showErrorMessage responseJSON.message
 
