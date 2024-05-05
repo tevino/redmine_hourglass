@@ -75,6 +75,19 @@ module Hourglass
                                  user.default_activity(activity_options)&.id if project.present?
     end
 
+    def as_json(options = nil)
+      form_details = options&.delete(:form_details)
+      super.tap do |tmp|
+        tmp.merge!({
+                     issue_label: issue.present? ? "##{issue.id} #{issue.subject}" : nil,
+                     activities: activity_options.map { |activity|
+                       { id: activity.id, name: activity.name, isDefault: default_activity_id == activity.id }
+                     }
+                   }.as_json) if form_details
+        tmp
+      end
+    end
+
     private
 
     def init

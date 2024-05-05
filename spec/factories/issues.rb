@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :issue_priority do
-    name { Faker::Color.color_name }
+    sequence(:name) { |n| "#{Faker::Color.color_name}-#{n}" }
   end
 
   factory :issue_status do
@@ -9,7 +9,7 @@ FactoryBot.define do
   end
 
   factory :tracker do
-    name { Faker::Ancient.name }
+    sequence(:name) { |n| "#{Faker::Ancient.name}-#{n}" }
     # description { Faker::Lorem.words(number: 10) } # note: not in Redmine <5.x
     default_status { create :issue_status }
   end
@@ -17,7 +17,7 @@ FactoryBot.define do
   factory :issue do
     project { create(:project, trackers: [(create :tracker)]) }
     author { create :user }
-    subject { "Not working on #{Faker::Computer.os}" }
+    sequence(:subject, 'abc') { |n| "Not working on #{Faker::Computer.os.gsub(/\d+/, '')}-#{n}" }
     description { Faker::Lorem.words(number: 10) }
     tracker { project.trackers.first }
     priority { create :issue_priority }
